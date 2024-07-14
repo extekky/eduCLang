@@ -7,7 +7,7 @@ long **make2dMassive(long row, long col)
     long **massive = (long **)calloc(row, sizeof(long *));
     if (massive != NULL)
     {
-        for (size_t i = 0; i < row; i++)
+        for (long i = 0; i < row; i++)
         {
             *(massive + i) = (long *)calloc(col, sizeof(long));
             if (*(massive + i) == NULL)
@@ -39,7 +39,7 @@ void show2DMassive(long **massive, long row, long col)
 
 void free2dMassive(long **massive, long row, short showMassage)
 {
-    for (size_t i = 0; i < row; i++)
+    for (long i = 0; i < row; i++)
     {
         free(massive[i]);
     }
