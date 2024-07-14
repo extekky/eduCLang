@@ -1,36 +1,68 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "convert.h"
+#include "makeMassive.h"
 
-enum
+int main(void)
 {
-    max_lengh_name = 50
-};
+    long row = 3, col = 4;
+    
+    // Создание массива
+    long **myMassive = make2dMassive(row, col);
 
-struct person
-{
-    short age, high;
-    char *first_name, *middle_name, *last_name;
-};
+    // Вывод масства
+    show2DMassive(myMassive, row, col);
 
-int main()
-{
-    struct person stas;
-
-    stas.age = 20;
-    stas.high = 189;
-
-    stas.first_name = "Stas";
-    stas.middle_name = "Stepanov";
-    stas.last_name = "Eduardovich";
-
-    printf("Длинна фамилии: %ld\n", strlen(stas.middle_name));
-    printf("Размер структуры Person: %ld\n", sizeof(struct person));
-    printf("Размер first_name: %ld\n", sizeof(stas.middle_name));
-    // printf("Фамилия%s: %s\n", stas.first_name, stas.middle_name);
-    printf("Отчество %s: %s\n", stas.first_name, stas.last_name);
-    printf("Возраст %s:%d\n", stas.first_name, stas.age);
+    // Очиска памяти
+    free2dMassive(myMassive, row, 0);
 
     return 0;
 }
+
+/*
+ int count = 0;
+
+    // Make 2D masive:
+    int **p = (int **)malloc(3 * sizeof(int *));
+    if (p == NULL)
+    {
+        printf("Не удалось выделить память для **p :(\n");
+        return 1;
+    }
+    else
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            *(p + i) = (int *)malloc(2 * sizeof(int));
+            if (*(p + i) == NULL)
+            {
+                printf("Не удалось выделить память для *(p + %d) :(\n", i);
+                return 1;
+            }
+            else
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    *(*(p + i) + j) = count;
+                    count++;
+                }
+            }
+        }
+    }
+    // Read 2D masiive:
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            printf("%d ", *(*(p + i) + j));
+        }
+        printf("\n");
+    }
+
+    // Clear memory:
+    for (int i = 0; i < 3; i++)
+    {
+        free(*(p + i));
+    }
+    free(p);
+*/
