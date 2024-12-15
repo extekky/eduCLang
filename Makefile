@@ -1,45 +1,40 @@
-TARGET = eduCLang
+# Имя исполняемого файла
+TARGET=main
 
-SRC_DIR = src
-BUILD_DIR = build
+# Компилятор и флаги
+CC=gcc
+CFLAGS=-Wall -Wextra -I./src
+LDFLAGS=
 
-CC = gcc
+# Указываем директорию для объектных файлов
+BUILD_DIR = .build_x86_64
 
-CFLAGS = -Wall -Wextra -std=c11 -I/usr/local/include  
+# Указываем исходные файлы
+SRCS = $(wildcard src/*.c)
 
-LDFLAGS = -L/usr/local/lib -ljansson  
+# Список объектных файлов (заменяем .c на .o и добавляем путь к BUILD_DIR)
+OBJS = $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(SRCS))
 
-SRCS = $(wildcard $(SRC_DIR)/*.c)
-OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
+# Правило по умолчанию
+all: $(BUILD_DIR) $(TARGET)
 
-all: $(BUILD_DIR)/$(TARGET)
+# Правило для создания директории для объектных файлов
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
-$(BUILD_DIR)/$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+# Правило для сборки исполняемого файла
+$(TARGET): $(OBJS)
+	$(CC) -o $@ $^
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(BUILD_DIR)
+# Правило для компиляции исходных файлов в объектные файлы
+$(BUILD_DIR)/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: clean
+# Правило для очистки
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR)/*.o $(TARGET)
 
-.PHONY: run
+.PHONY: all clean
+
 run: $(BUILD_DIR)/$(TARGET)
 	./$(BUILD_DIR)/$(TARGET)
-
-
-# Объяснение флагов:
-#     -I/usr/local/include:
-#         Этот флаг добавляет путь /usr/local/include к списку директорий, 
-# 		  в которых компилятор ищет заголовочные файлы. Это необходимо для 
-# 		  включения заголовков Jansson, таких как jansson.h.
-#     -L/usr/local/lib:
-#         Этот флаг добавляет путь /usr/local/lib к списку директорий, в 
-# 		  которых компилятор ищет библиотечные файлы. Это необходимо для 
-# 		  нахождения библиотечного файла Jansson (libjansson.so или libjansson.a).
-#     -ljansson:
-#         Этот флаг указывает компилятору на необходимость линковки с библиотекой 
-# 		  Jansson. Префикс -l говорит компилятору искать файл библиотеки с именем 
-# 		  libjansson.so или libjansson.a.
