@@ -4,51 +4,53 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "convenience_function.h"
 #include "leetcode.h"
 #include "lib_of_books.h"
 #include "makeMassive.h"
 #include "mystring.h"
-#include "udp_packet.h"
 
-int main(void)  
+#define PRINT_INT(number) (printf("%d\n", (number)))
+#define PRINT_POINT(point) (printf("x = %d, y = %.1f\n", (point).x, (point).y))
+#define PRINT_STR(string) (printf("%s\n", (string)))
+
+int main(void)
 {
-        udpPacket packet;
+        int numbers[] = {10, 20, 30, 40, 50};
+        int *sub = SLICE_ARRAY(numbers, int, 0, 3);
 
-        packet.s_port = htons(12345);
-        packet.d_port = htons(54321);
-
-        const char *message = "Hello, UDP!";
-
-        strncpy(packet.data, message, MAX_DATA_SIZE - 1);
-
-        packet.data[MAX_DATA_SIZE - 1] = '\0';
-        packet.length =
-            htons(sizeof(packet) - MAX_DATA_SIZE + strlen(packet.data) + 1);
-        packet.checksum = 0;
-
-        int sock = socket(AF_INET, SOCK_RAW, IPPROTO_UDP);
-        if (sock < 0) {
-                perror("Errro socket creation.");
+        if (sub) {
+                for (size_t i = 0; i < (3 - 0); i++) {
+                        PRINT_INT(sub[i]);
+                }
+                free(sub);
+        } else
                 return 1;
-        }
 
-        struct sockaddr_in dest_addr;
-        memset(&dest_addr, 0, sizeof(dest_addr));
-        dest_addr.sin_family = AF_INET;
-        dest_addr.sin_port = packet.d_port;
-        inet_pton(AF_INET, "127.0.0.1", &dest_addr.sin_addr);
+        typedef struct {
+                int x;
+                double y;
+        } Point;
 
-        ssize_t bytes_sent =
-            sendto(sock, &packet, ntohs(packet.length), 0,
-                   (struct sockaddr *)&dest_addr, sizeof(dest_addr));
-        if (bytes_sent < 0) {
-                perror("Error packet trasmit");
-                close(sock);
-                return 1;
-        }
+        Point points[] = {{1, 2.5}, {3, 4.5}, {5, 6.5}};
+        Point *slice = SLICE_ARRAY(points, Point, 0, 3);
 
-        printf("Send %zd byte\n", bytes_sent);
+        if (slice) {
+                for (size_t i = 0; i < (3 - 0); i++) {
+                        PRINT_POINT(slice[i]);
+                }
+                free(slice);
+        } else
+                return 2;
 
-        close(sock);
+        const char str[] = "Hello, World!\n";
+        char *sub_str = SLICE_ARRAY(str, char, 7, 12);
+
+        if (sub_str) {
+                PRINT_STR(sub_str);
+                free(sub_str);
+        } else
+                return 3;
+
         return 0;
 }
