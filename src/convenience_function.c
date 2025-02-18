@@ -8,7 +8,7 @@
 
 #define CHECK_SIZE_OVERFLOW(numElem, elemSize) ((numElem) >  (size_t) - 1 / (elemSize)) 
 
-// Удобный вызов для массивов (только для статических массивов!)
+//  A convenient call for arrays (only for static arrays!)
 #define SLICE_ARRAY(data, elemType, start, end) \
     sliceMemArea(data, sizeof(elemType), start, end, sizeof(data)/sizeof(elemType))
 

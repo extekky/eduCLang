@@ -87,5 +87,3 @@ char *longestCommonPrefix(char **strs, int strsSize)
         commonPrefix[idx] = '\0';
         return commonPrefix;
 }
-
-// static bool isMatch(char *s, char *p) { return 0; }

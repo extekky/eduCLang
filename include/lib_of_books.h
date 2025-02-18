@@ -1,5 +1,3 @@
-// library.h
-
 #ifndef LIBRARY_H
 #define LIBRARY_H
 
@@ -18,12 +16,12 @@ typedef struct {
     int year_of_publication;
 } Book;
 
-extern Book *library;   // Global value 
-extern int *occ_places; // Global value 
+extern Book *library;  
+extern int *occ_places;
 
 int add_book(Book book, int idx);
 void print_library(void);
 void delete_book(const int idx);
 void initialize_library(void);
 
-#endif // LIBRARY_H
+#endif

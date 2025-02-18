@@ -24,8 +24,7 @@ int add_book(Book book, int idx)
         strcpy(library[idx].title, book.title);
         strcpy(library[idx].publishing_house, book.publishing_house);
         library[idx].year_of_publication = book.year_of_publication;
-
-        // occ_places
+        
         return 0;
 }
 
@@ -43,7 +42,6 @@ void print_library(void)
         }
         printf("End of list books\n");
 }
-// void print_bookInfo_by_name() {}
 
 void delete_book(const int idx)
 {

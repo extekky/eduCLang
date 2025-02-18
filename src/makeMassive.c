@@ -12,14 +12,14 @@ long **make2dMassive(long row, long col)
             *(massive + i) = (long *)calloc(col, sizeof(long));
             if (*(massive + i) == NULL)
             {
-                printf("Ошибка в выделении памяти!\n");
+                printf("Memory allocation error!\n");
                 exit(2);
             }
         }
     }
     else
     {
-        printf("Ошибка в выделении памяти!\n");
+        printf("Memory allocation error!\n");
         exit(1);
     }
     return massive;
