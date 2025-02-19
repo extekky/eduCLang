@@ -13,6 +13,7 @@ void nodePrint(Node *head);
 Node *nodeClear(Node *head);
 Node *nodeDelete(Node *head, int value);
 Node *nodeDeleteByPosition(Node *head, size_t pos);
-Node *reverseList(Node *head);
+Node *nodeReverse(Node *head);
+Node *nodeAddTwoNumbers(Node *l1, Node *l2);
 
 #endif

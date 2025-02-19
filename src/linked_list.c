@@ -91,7 +91,7 @@ Node *nodeDeleteByPosition(Node *head, size_t pos)
         return head;
 }
 
-Node *reverseList(Node *head)
+Node *nodeReverse(Node *head)
 {
         int *vals = malloc(sizeof(int) * 5000);
         Node *temp = head;
@@ -111,4 +111,28 @@ Node *reverseList(Node *head)
         }
         free(vals);
         return head;
+}
+
+Node *nodeAddTwoNumbers(Node *l1, Node *l2)
+{
+        Node *result = NULL;
+        int unit = 0, current_sum = 0;
+        while (l1 != NULL || l2 != NULL) {
+                if (l1 != NULL) {
+                        current_sum += l1->data;
+                        l1 = l1->next;
+                }
+                if (l2 != NULL) {
+                        current_sum += l2->data;
+                        l2 = l2->next;
+                }
+
+                unit = current_sum % 10;
+                current_sum = (current_sum - unit) / 10;
+
+                result = nodeAddNode(result, unit);
+        }
+        if (current_sum > 0)
+                result = nodeAddNode(result, current_sum);
+        return result;
 }
