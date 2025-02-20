@@ -11,17 +11,67 @@
 #include "makeMassive.h"
 #include "mystring.h"
 
-int main(void)
+#define BUFFER_SIZE 512
+#define MAX_NUMBERS 100
+
+int main()
 {
-        Node *head = NULL;
-        for (int i = 1; i < 10; i++)
-                head = nodeAddNode(head, i * 10);
+        int *numbers = malloc(MAX_NUMBERS * sizeof(int));
+        if (numbers == NULL) {
+                perror("Memory allocation failed for numbers");
+                return EXIT_FAILURE;
+        }
 
-        for (int i = 0; i <= 100; i += 20)
-                head = nodeDelete(head, i);
+        FILE *file = fopen("/home/stas/projects/c/eduCLang/file.txt", "r");
+        if (file == NULL) {
+                perror("Error opening file");
+                free(numbers);
+                return EXIT_FAILURE;
+        }
 
-        nodePrint(head);
-        head = nodeClear(head);
-        printf("%p\n", head);
-        return 0;
+        char *buffer = malloc(BUFFER_SIZE);
+        if (buffer == NULL) {
+                perror("Memory allocation failed for buffer");
+                fclose(file);
+                free(numbers);
+                return EXIT_FAILURE;
+        }
+
+        size_t index = 0;
+        int ch;
+        while ((ch = fgetc(file)) != EOF && index < BUFFER_SIZE - 1) {
+                buffer[index++] = (char)ch;
+        }
+        buffer[index] = '\0';
+
+        fclose(file);
+
+        char **tokens = sliceStringBySymbol(buffer, ' ');
+        free(buffer);
+
+        if (tokens == NULL) {
+                perror("Error slicing string");
+                free(numbers);
+                return EXIT_FAILURE;
+        }
+
+        size_t count = 0;
+        for (size_t i = 0; tokens[i] != NULL && count < MAX_NUMBERS; i++) {
+                numbers[count++] = myAtoi(tokens[i]);
+        }
+
+        for (size_t i = 0; tokens[i] != NULL; i++) {
+                free(tokens[i]);
+        }
+        free(tokens);
+
+        int sum = 0;
+        for (size_t i = 0; i < count; i++) {
+                sum += numbers[i];
+        }
+
+        printf("%d", sum);
+
+        free(numbers);
+        return EXIT_SUCCESS;
 }
